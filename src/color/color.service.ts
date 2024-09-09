@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { ColorDto } from './dto/color.dto'
+import { ErrorHandlerService } from 'src/utils/errorHandler'
 
 @Injectable()
 export class ColorService {
@@ -23,19 +24,33 @@ export class ColorService {
 	}
 
 	async create(dto: ColorDto) {
-		return this.prisma.color.create({
-			data: {
-				name: dto.name,
-				value: dto.value
-			}
-		})
+		return this.prisma.color
+			.create({
+				data: {
+					name: dto.name,
+					value: dto.value
+				}
+			})
+			.catch(error => {
+				ErrorHandlerService.handleError(
+					error,
+					'Цвет с таким названием уже существует'
+				)
+			})
 	}
-	
+
 	async update(id: string, dto: ColorDto) {
-		return this.prisma.color.update({
-			where: { id },
-			data: dto
-		})
+		return this.prisma.color
+			.update({
+				where: { id },
+				data: dto
+			})
+			.catch(error => {
+				ErrorHandlerService.handleError(
+					error,
+					'Цвет с таким названием уже существует'
+				)
+			})
 	}
 
 	async delete(id: string) {

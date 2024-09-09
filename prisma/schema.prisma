@@ -56,7 +56,7 @@ model Product {
   specs       Json?
 
   reviews    Review[]
-  colors     Color[]
+  colors     Color[]     @relation("product_colors")
   orderItems OrderItem[]
 
   store   Store?  @relation(fields: [storeId], references: [id])
@@ -103,10 +103,10 @@ model Color {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  name  String
+  name  String @unique
   value String
 
-  products Product[]
+  products Product[] @relation("product_colors")
 
   @@map("color")
 }
