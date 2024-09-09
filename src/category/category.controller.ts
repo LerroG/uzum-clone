@@ -5,7 +5,6 @@ import {
 	Get,
 	HttpCode,
 	Param,
-	Patch,
 	Post,
 	Put,
 	UsePipes,
@@ -42,12 +41,14 @@ export class CategoryController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Put(':id')
+	@Auth()
 	async updateCategory(@Param('id') id: string, @Body() dto: CategoryDto) {
 		return this.categoryService.updateCategory(id, dto)
 	}
 
 	@HttpCode(200)
 	@Delete(':id')
+	@Auth()
 	async deleteCategory(@Param('id') id: string) {
 		return this.categoryService.deleteCategory(id)
 	}
@@ -77,6 +78,7 @@ export class CategoryController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Put('subcategories/:subcategoryId')
+	@Auth()
 	async updateSubcategory(
 		@Param('subcategoryId') subcategoryId: string,
 		@Body() dto: CategoryDto
@@ -86,6 +88,7 @@ export class CategoryController {
 
 	@HttpCode(200)
 	@Delete('subcategories/:subcategoryId')
+	@Auth()
 	async deleteSubcategory(@Param('subcategoryId') subcategoryId: string) {
 		return this.categoryService.deleteSubcategory(subcategoryId)
 	}
